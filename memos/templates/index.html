@@ -37,25 +37,52 @@
 {% endwith %}
 
 <h1>Memos</h1>
+<br />
 
 {% if g.memos %}
+    <div align="right">
+        <a class="link" href="/add">Add Memo</a>
+    </div>
+    <br />
     {% for memo in g.memos %}
-  <div class="memo">
-  <div class="row">
-  <div class="col-md-2">
-    {{ memo.date | humanize }}
-  </div>
-  <div class="col-md-10">
-    {{ memo.text }}
-  </div>
-  </div> <!-- row -->
-  </div> <!-- memo -->
+      <div class="memo">
+        <hr width=100% align=left>
+        <div class="date">
+           <p class="memo_date" name="memo_date" id="{{ memo.date }}">{{ memo.date | humanize }}:
+           <button type="button" name="delete" style="float: right;">
+		Delete Memo
+	   </button>
+           </p>
+        <input type="hidden" name="raw_date" value="{{ memo.date }}">
+        </div>
+        <div class="text">
+            <p class="my_memo memo_text" name="memo_text">
+                {% autoescape false %}
+                  {{ memo.text }}
+                {% endautoescape %}
+            </p>
+        </div>
+      </div>
   {% endfor %}
 {% else %}
-  <p>No memos for you. </p>  
+  <p class="my_memo">You do not yet have any memos.<br>Click <a href="/add">Add Memo</a> to create one.</p>  
 {% endif %}
 
- 
+<script>
+
+$('button[name="delete"]').click(
+    function() {
+        var memo_entry = $(this).parents(".memo");
+        var del_url = {{request.script_root|tojson|safe}} + "/_del_memo";
+        var memo_text = memo_entry.find("p[name='memo_text']").html().trim();
+        console.log("memo text is: "+memo_text);
+        var memo_date = memo_entry.find("input[name='raw_date']").attr("value");
+        console.log("memo date is: "+memo_date);
+        $.getJSON(del_url, {memo_text: memo_text, memo_date: memo_date}, function(){});
+	location.reload();
+    });
+
+</script>
 
 </div> <!-- container -->
 </body>

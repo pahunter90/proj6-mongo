@@ -34,7 +34,8 @@ memos/credentials.ini:
 run:	env credentials
 	$(INVENV) cd memos; python3 flask_main.py
 
-
+stop:	env credentials
+	bash stop.sh
 
 ##
 ## Preserve virtual environment for git repository

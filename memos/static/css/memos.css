@@ -5,6 +5,42 @@
 
 /* Nothing yet */
 
+h1 {
+	color: darkblue;
+}
+
+hr {
+	color: darkgreen;
+	background-color: darkgreen;
+	height: 2px;
+}
+
+input[type="date"] {
+	font-size: 22px;
+}
+
+textarea {
+	font-size: 16px;
+        white-space: normal;
+}
+
+p.my_memo {
+	font-size: 16px;
+}
+
+p.memo_date {
+	font-size: 18px;
+}
+
+p.memo_text {
+	margin-left: 20px;
+        white-space: pre-line;
+}
+
+a.link {
+	font-size: 15px;
+}
+
 .lyrics {
     margin-left: 3em;
     font-style: italic;

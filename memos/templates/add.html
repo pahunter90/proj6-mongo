@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Memos</title>
+
+  <!-- 'viewport' is used by bootstrap to respond to device size -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Javascript:  JQuery from a content distribution network (CDN) -->
+  <script
+     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+  </script>
+
+  <!-- Bootstrap includes javascript and css  (must follow jquery) -->
+  <link rel="stylesheet"
+   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+   <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+</script>
+
+  <!-- moment.js is the JavaScript equivalent of arrow.py -->
+  <script 
+    src="{{ url_for('static', filename="js/moment.min.js") }}"></script>
+
+   <!-- Our own style sheet -->
+   <link rel="stylesheet" type="text/css" href="/static/css/memos.css" />
+
+
+</head>
+
+
+<body>
+<div class="container">
+
+<!-- Flashed messages before content -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<h1>Add a Memo</h1>
+
+<div>
+<h3>Memo Date:</h3>
+<input type="date" name="memo_date" id="memo_date" size="7" value="2017-12-01" />
+</div>
+
+<div>
+<h3>Memo Text:</h3>
+<textarea name="memo_text" id="memo_text" rows="15" cols="90" autofocus value=""></textarea>
+</div>
+
+<div>
+<br />
+<button type="button" name="submit" id="submit">Submit Memo</button>
+<button type="button" name="clear" id="clear">Clear</button>
+<button type="button" name="back" id="back">Back to Memos</button>
+</div>
+
+<script>
+
+document.getElementById("submit").onclick = function()
+{
+    var script_root = {{ request.script_root|tojson|safe }};
+    var memo_add_url = script_root + "/_add_memo";
+    var raw_date = document.getElementById("memo_date").value;
+    console.log("Raw Date: "+raw_date);
+    var memo_date = moment(raw_date, "YYYY-MM-DD").local().toJSON();
+    console.log("Memo Date: "+memo_date);
+    var memo_text = document.getElementById("memo_text").value;
+    $.getJSON(memo_add_url, {memo_date: memo_date, memo_text: memo_text}, function(){});
+    window.location = "/";
+}
+
+document.getElementById("clear").onclick = function()
+{
+    document.getElementById("memo_text").value = "";
+}
+
+document.getElementById("back").onclick = function()
+{
+    window.location = "/";
+}
+
+</script>
+
+</div> <!-- container -->
+</body>
+</html>
