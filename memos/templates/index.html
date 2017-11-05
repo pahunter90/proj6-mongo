@@ -79,7 +79,7 @@ $('button[name="delete"]').click(
         var memo_date = memo_entry.find("input[name='raw_date']").attr("value");
         console.log("memo date is: "+memo_date);
         $.getJSON(del_url, {memo_text: memo_text, memo_date: memo_date}, function(){});
-	location.reload();
+	window.location = "/";
     });
 
 </script>
